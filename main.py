@@ -1,10 +1,14 @@
 #!/usr/bin/python3
 import argparse
 
+__version__ = '1.0.0'
+__progname__ = 'DefenderInjector'
+
 def main():
-    parser = argparse.ArgumentParser(description='Inject Microsoft Defender triggerer to an image')
+    parser = argparse.ArgumentParser(usage='\r' + __progname__ + ' ' + __version__ + '\nusage: ./main.py [-h] [-V] input output', prog=__progname__)
     parser.add_argument('input', help='An image input to inject the Microsoft Defender triggerer')
     parser.add_argument('output', help='An image output for resulting image')
+    parser.add_argument('-V', '--version', help='Return version', action='version', version=__progname__ + " " + __version__.ljust(len('usage:')))
     args = parser.parse_args()
 
     file = open(args.input, 'rb')
