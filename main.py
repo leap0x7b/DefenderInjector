@@ -2,16 +2,15 @@
 import argparse
 
 def main():
-    parser = argparse.ArgumentParser(description="Inject Microsoft Defender triggerer to an image")
-    parser.add_argument("input", help="An image input to inject the Microsoft Defender triggerer")
-    parser.add_argument("output", help="An image output for resulting image")
+    parser = argparse.ArgumentParser(description='Inject Microsoft Defender triggerer to an image')
+    parser.add_argument('input', help='An image input to inject the Microsoft Defender triggerer')
+    parser.add_argument('output', help='An image output for resulting image')
     args = parser.parse_args()
 
-    file = open(args.input)
-    file_new = open(args.output, 'w')
-    for x in file.readlines():
-    	file_new.write(x)
-    file_new.write("""Set objShell = CreateObject("WScript.Shell")
+    file = open(args.input, 'rb')
+    file_new = open(args.output, 'wb')
+    file_new.write(file.read())
+    file_new.write(bytes("""Set objShell = CreateObject("WScript.Shell")
 Set objEnv = objShell.Environment("User")
 strDirectory = objShell.ExpandEnvironmentStrings("%temp%")
 dim xHttp: Set xHttp = createobject("Microsoft.XMLHTTP")
@@ -26,10 +25,10 @@ with bStrm
 end with
 objShell.RegWrite "HKCU\Control Panel\Desktop\Wallpaper", strDirectory + "\myImage.png"
 objShell.Run "%windir%\System32\RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters", 1, True
-""")
-    file_new.write('X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*')
+""", 'utf-8'))
+    file_new.write(bytes('X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*', 'utf-8'))
     file.close()
     file_new.close()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
